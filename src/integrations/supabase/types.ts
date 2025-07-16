@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          achievement_type: string
+          description: string | null
+          earned_at: string
+          id: string
+          metadata: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          achievement_type: string
+          description?: string | null
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          achievement_type?: string
+          description?: string | null
+          earned_at?: string
+          id?: string
+          metadata?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           created_at: string
@@ -77,6 +107,51 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      learning_goals: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          estimated_hours_per_week: number | null
+          id: string
+          progress_percentage: number | null
+          status: string | null
+          target_date: string | null
+          title: string
+          total_estimated_hours: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_hours_per_week?: number | null
+          id?: string
+          progress_percentage?: number | null
+          status?: string | null
+          target_date?: string | null
+          title: string
+          total_estimated_hours?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          estimated_hours_per_week?: number | null
+          id?: string
+          progress_percentage?: number | null
+          status?: string | null
+          target_date?: string | null
+          title?: string
+          total_estimated_hours?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       messages: {
         Row: {
@@ -169,6 +244,50 @@ export type Database = {
         }
         Relationships: []
       }
+      progress_logs: {
+        Row: {
+          created_at: string
+          date: string
+          duration_minutes: number | null
+          goal_id: string
+          id: string
+          mood: string | null
+          reflection: string | null
+          topic_covered: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          duration_minutes?: number | null
+          goal_id: string
+          id?: string
+          mood?: string | null
+          reflection?: string | null
+          topic_covered?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          duration_minutes?: number | null
+          goal_id?: string
+          id?: string
+          mood?: string | null
+          reflection?: string | null
+          topic_covered?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "progress_logs_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "learning_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       properties: {
         Row: {
           address: string
@@ -219,6 +338,94 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      recommendations: {
+        Row: {
+          created_at: string
+          description: string | null
+          goal_id: string | null
+          id: string
+          is_viewed: boolean | null
+          resource_type: string | null
+          resource_url: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          goal_id?: string | null
+          id?: string
+          is_viewed?: boolean | null
+          resource_type?: string | null
+          resource_url?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          goal_id?: string | null
+          id?: string
+          is_viewed?: boolean | null
+          resource_type?: string | null
+          resource_url?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendations_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "learning_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reminders: {
+        Row: {
+          created_at: string
+          goal_id: string | null
+          id: string
+          is_active: boolean | null
+          message: string | null
+          reminder_time: string | null
+          reminder_type: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          goal_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          message?: string | null
+          reminder_time?: string | null
+          reminder_type?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          goal_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          message?: string | null
+          reminder_time?: string | null
+          reminder_type?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminders_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "learning_goals"
+            referencedColumns: ["id"]
           },
         ]
       }
