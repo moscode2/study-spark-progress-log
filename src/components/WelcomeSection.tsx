@@ -69,6 +69,7 @@ export const WelcomeSection = ({ onGetStarted }: WelcomeSectionProps) => {
               <Button 
                 size="lg" 
                 variant="outline"
+                onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
                 className="text-lg px-8 py-4 h-auto bg-white/10 border-white/30 text-white hover:bg-white/20"
               >
                 Watch Demo

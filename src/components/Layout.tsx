@@ -10,12 +10,15 @@ import {
   Moon, 
   Sun,
   Menu,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,9 +32,15 @@ const navigation = [
 ];
 
 export const Layout = ({ children }: LayoutProps) => {
+  const { user, signOut } = useAuth();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Signed out successfully');
+  };
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -108,7 +117,9 @@ export const Layout = ({ children }: LayoutProps) => {
                     <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                       <User className="h-4 w-4 text-primary-foreground" />
                     </div>
-                    <span className="hidden sm:inline">John Doe</span>
+                    <span className="hidden sm:inline">
+                      {user?.user_metadata?.first_name || user?.email?.split('@')[0] || 'User'}
+                    </span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -120,11 +131,8 @@ export const Layout = ({ children }: LayoutProps) => {
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Learning History
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-destructive">
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
